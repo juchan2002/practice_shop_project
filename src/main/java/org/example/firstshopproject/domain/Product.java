@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "product")
 @NoArgsConstructor
-@Data
+@Data   
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정, MySQL에서 사용

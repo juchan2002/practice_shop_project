@@ -47,4 +47,15 @@ public class ProductService {
 //        int totalProducts = productRepository.countProducts();
 //        return (int) Math.ceil((double) totalProducts / size);
 //    }
+
+    @Transactional
+    public List<Product> getProductsByCategoryId(int categoryId, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;  // offset 계산
+        return productRepository.getProductsByCategoryId(categoryId, pageSize, offset);
+    }
+    @Transactional
+    public int getTotalPages(int size) {
+        int totalProducts = productRepository.countProducts();
+        return (int) Math.ceil((double) totalProducts / size);
+    }
 }

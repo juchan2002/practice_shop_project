@@ -7,10 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -56,5 +53,25 @@ public class ProductController {
     public Product getProductsById(@PathVariable int product_id){
         return productService.getProductsById(product_id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + product_id));
+    }
+    
+    @GetMapping(value = "/products", params = {"category_id", "page"})
+    public Map<String, Object> getProductsByCategoryId(
+            @RequestParam int category_id,
+            @RequestParam(defaultValue = "1") int page){
+        int pageSize = 10;
+
+        // 불필요한 optional 사용 X
+        // productList가 null일 때, 그냥 빈 리스트 반환
+        List<Product> productList = productService.getProductsByCategoryId(category_id, page, pageSize);
+
+        int totalPages = productService.getTotalPages(pageSize);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("products", productList);
+        response.put("currentPage", page);
+        response.put("totalPages", totalPages);
+
+        return response;
     }
 }

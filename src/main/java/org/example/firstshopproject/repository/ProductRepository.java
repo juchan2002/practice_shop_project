@@ -15,6 +15,11 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     Optional<Product> getProductsById(int productId);
 
+    @Query(value = "SELECT * FROM product p where p.category_id = :categoryId  ORDER BY id LIMIT :limit OFFSET :offset", nativeQuery = true)
+    List<Product> getProductsByCategoryId(@Param("categoryId") int categoryId, @Param("limit") int limit, @Param("offset") int offset);
+    @Query(value = "SELECT COUNT(*) FROM product", nativeQuery = true)
+    int countProducts();
+
 //    /// 페이징 방법(3)
 //    @Query(value = "SELECT * FROM product ORDER BY id LIMIT :limit OFFSET :offset", nativeQuery = true)
 //    List<Product> findProductsByPage(@Param("limit") int limit, @Param("offset") int offset);
